@@ -1,35 +1,67 @@
+///reference path="util.ts"
+///reference path="types.ts"
+
 
 $(() => {
     var pageToLoad = getParameterByName("v");
     if (!pageToLoad)
         pageToLoad = "home";
 
-    var htmlPath = "partials/" + pageToLoad + ".html";
-    var jsPath = "assets/js/release/partials/" + pageToLoad + ".js";
+    var defGetPageDetails;
 
-    fileExists(htmlPath).then((htmlResult) => {
-        if (htmlResult) {
-            loadHTMLFile(htmlPath);
+    if (pageToLoad == "activity")
+        defGetPageDetails = getActivityHtmlAndJsPath(getParameterByName("a"))
+    else
+        defGetPageDetails = getPartialHtmlAndJsPath(pageToLoad);
 
-            fileExists(jsPath).then((jsResult) => {
-                if (jsResult) loadJSFile(jsPath);
-            });
-        }
-    });
-
+    defGetPageDetails.then(
+        (pageDetails: PageDetails) => { loadFiles(pageDetails) },
+        () => { console.log("error") });
 
 
 });
 
-function getParameterByName(name: string): string {
-    var regexS = "[\\?&]" + name + "=([^&#]*)",
-        regex = new RegExp(regexS),
-        results = regex.exec(window.location.search);
-    if (results == null) {
-        return "";
-    } else {
-        return decodeURIComponent(results[1].replace(/\+/g, " "));
+async function getPartialHtmlAndJsPath(pageToLoad: string): Promise<PageDetails> {
+    var def = $.Deferred<PageDetails>();
+
+    var pageDetails: PageDetails = {
+        htmlPath :  "partials/" + pageToLoad + ".html",
+        JsPath : "assets/js/release/partials/" + pageToLoad + ".js"
     }
+
+    def.resolve(pageDetails);
+
+    return def.promise();
+}
+
+async function getActivityHtmlAndJsPath(activityId: string): Promise<PageDetails> {
+    var def = $.Deferred<PageDetails>();
+
+    getActivityDetails(activityId).then(
+        (activityDetails: Activity) => {
+            var pageDetails: PageDetails = {
+                htmlPath: "partials/activities/" + activityDetails.parentFolderName + "/index.html",
+                JsPath: "assets/js/release/activities/" + activityDetails.parentFolderName + "/index.js"
+            }
+            def.resolve(pageDetails);
+        },
+        () => {
+            def.reject()
+        })
+
+    return def.promise();
+}
+
+async function loadFiles(pageDetails: PageDetails): Promise<void> {
+    fileExists(pageDetails.htmlPath).then((htmlResult) => {
+        if (htmlResult) {
+            loadHTMLFile(pageDetails.htmlPath);
+
+            fileExists(pageDetails.JsPath).then((jsResult) => {
+                if (jsResult) loadJSFile(pageDetails.JsPath);
+            });
+        }
+    });
 }
 
 async function fileExists(file: string): Promise<boolean> {
@@ -39,7 +71,7 @@ async function fileExists(file: string): Promise<boolean> {
 }
 
 function loadHTMLFile(filePath: string) {
-    $("#mainContent").load(filePath);
+    $("#mainContent").load(encodeURI( filePath));
 }
 
 function loadJSFile(filePath: string) {
