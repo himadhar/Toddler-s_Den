@@ -45,6 +45,9 @@ gulp.task('copy-activities', function () {
 
     gulp.src(['app/activities/**/*.html'])
         .pipe(gulp.dest("partials/activities"))
+
+    gulp.src(['app/activities/**/*.css'])
+        .pipe(gulp.dest("assets/css/activities"))
 });
 
 

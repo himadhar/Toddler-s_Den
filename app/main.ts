@@ -41,7 +41,8 @@ async function getActivityHtmlAndJsPath(activityId: string): Promise<PageDetails
         (activityDetails: Activity) => {
             var pageDetails: PageDetails = {
                 htmlPath: "partials/activities/" + activityDetails.parentFolderName + "/index.html",
-                JsPath: "assets/js/release/activities/" + activityDetails.parentFolderName + "/index.js"
+                JsPath: "assets/js/release/activities/" + activityDetails.parentFolderName + "/index.js",
+                cssPath : "assets/css/activities/" + activityDetails.parentFolderName + "/css/main.css",
             }
             def.resolve(pageDetails);
         },
@@ -60,6 +61,11 @@ async function loadFiles(pageDetails: PageDetails): Promise<void> {
             fileExists(pageDetails.JsPath).then((jsResult) => {
                 if (jsResult) loadJSFile(pageDetails.JsPath);
             });
+
+            if(pageDetails.cssPath)
+                fileExists(pageDetails.cssPath).then((cssResult) => {
+                    if (cssResult) loadCSSFile(pageDetails.cssPath?? "");
+                });
         }
     });
 }
@@ -78,5 +84,12 @@ function loadJSFile(filePath: string) {
     let node = document.createElement('script');
     node.src = filePath;
     node.type = 'text/javascript';
+    $("head").append(node);
+}
+
+function loadCSSFile(filePath: string) {
+    let node = document.createElement('link');
+    node.href = filePath;
+    node.rel = 'stylesheet';
     $("head").append(node);
 }

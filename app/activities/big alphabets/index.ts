@@ -9,8 +9,6 @@ $(() => {
 
 class BigAlphaActivity {
     
-   
-
     BigAlphaActivity() {
 
     }
@@ -52,5 +50,8 @@ class BigAlphaActivity {
         var alpha: string = this.generateRandomAlphabets();
         $("#alpha").text(alpha);
         $("#alpha").css('color', getRandomColor());
+        $("#imgAlpha").removeAttr('class');
+        $("#imgAlpha").addClass('sprite');
+        $("#imgAlpha").addClass('sprite-' + alpha);
     }
 }

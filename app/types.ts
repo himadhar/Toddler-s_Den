@@ -8,5 +8,6 @@ interface Activity {
 
 interface PageDetails{
     htmlPath:string,
-    JsPath:string
+    JsPath:string,
+    cssPath?:string
 }
