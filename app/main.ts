@@ -10,23 +10,25 @@ $(() => {
     var defGetPageDetails;
 
     if (pageToLoad == "activity")
-        defGetPageDetails = getActivityHtmlAndJsPath(getParameterByName("a"))
+        defGetPageDetails = getActivityPageDetails(getParameterByName("a"))
     else
-        defGetPageDetails = getPartialHtmlAndJsPath(pageToLoad);
+        defGetPageDetails = getPartialPageDetails(pageToLoad);
 
     defGetPageDetails.then(
         (pageDetails: PageDetails) => { loadFiles(pageDetails) },
         () => { console.log("error") });
 
-
+    if (pageToLoad == "activity") {
+        renderActivityBannerContent();
+    }
 });
 
-async function getPartialHtmlAndJsPath(pageToLoad: string): Promise<PageDetails> {
+async function getPartialPageDetails(pageToLoad: string): Promise<PageDetails> {
     var def = $.Deferred<PageDetails>();
 
     var pageDetails: PageDetails = {
-        htmlPath :  "partials/" + pageToLoad + ".html",
-        JsPath : "assets/js/release/partials/" + pageToLoad + ".js"
+        htmlPath: "partials/" + pageToLoad + ".html",
+        jsPath: "assets/js/release/partials/" + pageToLoad + ".js"
     }
 
     def.resolve(pageDetails);
@@ -34,15 +36,15 @@ async function getPartialHtmlAndJsPath(pageToLoad: string): Promise<PageDetails>
     return def.promise();
 }
 
-async function getActivityHtmlAndJsPath(activityId: string): Promise<PageDetails> {
+async function getActivityPageDetails(activityId: string): Promise<PageDetails> {
     var def = $.Deferred<PageDetails>();
 
     getActivityDetails(activityId).then(
         (activityDetails: Activity) => {
             var pageDetails: PageDetails = {
                 htmlPath: "partials/activities/" + activityDetails.parentFolderName + "/index.html",
-                JsPath: "assets/js/release/activities/" + activityDetails.parentFolderName + "/index.js",
-                cssPath : "assets/css/activities/" + activityDetails.parentFolderName + "/css/main.css",
+                jsPath: "assets/js/release/activities/" + activityDetails.parentFolderName + "/index.js",
+                cssPath: "assets/css/activities/" + activityDetails.parentFolderName + "/css/main.css",
             }
             def.resolve(pageDetails);
         },
@@ -58,13 +60,13 @@ async function loadFiles(pageDetails: PageDetails): Promise<void> {
         if (htmlResult) {
             loadHTMLFile(pageDetails.htmlPath);
 
-            fileExists(pageDetails.JsPath).then((jsResult) => {
-                if (jsResult) loadJSFile(pageDetails.JsPath);
+            fileExists(pageDetails.jsPath).then((jsResult) => {
+                if (jsResult) loadJSFile(pageDetails.jsPath);
             });
 
-            if(pageDetails.cssPath)
+            if (pageDetails.cssPath)
                 fileExists(pageDetails.cssPath).then((cssResult) => {
-                    if (cssResult) loadCSSFile(pageDetails.cssPath?? "");
+                    if (cssResult) loadCSSFile(pageDetails.cssPath ?? "");
                 });
         }
     });
@@ -77,7 +79,7 @@ async function fileExists(file: string): Promise<boolean> {
 }
 
 function loadHTMLFile(filePath: string) {
-    $("#mainContent").load(encodeURI( filePath));
+    $("#mainContent").load(encodeURI(filePath));
 }
 
 function loadJSFile(filePath: string) {

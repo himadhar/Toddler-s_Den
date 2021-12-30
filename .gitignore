@@ -3,3 +3,4 @@ assets/js/release
 assets/images/activities
 partials/activities
 assets/css/activities
+app/activities/activityList.json

@@ -8,13 +8,13 @@ $(() => {
 })
 
 class BigAlphaActivity {
-    
+
     BigAlphaActivity() {
 
     }
 
-    loadDetails() {
-        this.showRandomAlphabet();
+    loadDetails(selectedChar?: string) {
+        this.showRandomAlphabet(selectedChar);
     }
 
     setHeightWidth() {
@@ -24,17 +24,24 @@ class BigAlphaActivity {
 
     attachHandlers() {
         var _thisRef = this;
-         $("#alpha").on("click", function () {
-             _thisRef.loadDetails();
-         });
+        $("#alpha").on("click", function () {
+            _thisRef.loadDetails();
+        });
 
-         document.addEventListener('keydown', function(e) {
-            switch (e.key) {
-                case "ArrowUp":  
+        document.addEventListener('keydown', function (e) {
+            switch (e.code) {
+                case "ArrowUp":
                 case "ArrowDown":
                 case "ArrowLeft":
                 case "ArrowRight":
                     _thisRef.loadDetails();
+                    break;
+                case "KeyA": case "KeyB": case "KeyC": case "KeyD": case "KeyE":
+                case "KeyF": case "KeyG": case "KeyH": case "KeyI": case "KeyJ":
+                case "KeyK": case "KeyL": case "KeyM": case "KeyN": case "KeyO":
+                case "KeyP": case "KeyQ": case "KeyR": case "KeyS": case "KeyT":
+                case "KeyU": case "KeyV": case "KeyW": case "KeyX": case "KeyY": case "KeyZ":
+                    _thisRef.loadDetails(e.key.toUpperCase());
                     break;
             }
         });
@@ -42,16 +49,17 @@ class BigAlphaActivity {
 
     generateRandomAlphabets(): string {
         var validChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        var charIndex = getRandomInt(26);
+        var charIndex = getRandomInt(0, 26);
         return validChars[charIndex];
     }
 
-    showRandomAlphabet() {
-        var alpha: string = this.generateRandomAlphabets();
+    showRandomAlphabet(selectedChar?: string) {
+        var alpha: string = selectedChar ?? this.generateRandomAlphabets();
         $("#alpha").text(alpha);
         $("#alpha").css('color', getRandomColor());
         $("#imgAlpha").removeAttr('class');
-        $("#imgAlpha").addClass('sprite');
-        $("#imgAlpha").addClass('sprite-' + alpha);
+        var randomSprite = getRandomInt(1, 2);
+        $("#imgAlpha").addClass('sprite' + randomSprite);
+        $("#imgAlpha").addClass('sprite-' + alpha + randomSprite);
     }
 }

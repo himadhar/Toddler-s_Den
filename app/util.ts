@@ -33,10 +33,15 @@ async function getActivityDetails(id: string): Promise<Activity> {
     return def.promise();
 }
 
-function getRandomInt(max: number): number {
-    return Math.floor(Math.random() * max);
+function getRandomInt(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function getRandomColor(): string {
     return Math.floor(Math.random() * 16777215).toString(16);
+}
+
+function renderActivityBannerContent() : void {
+    var htmlContent : string = "<a href='index.html?v=activities' class='link-dark'>View all Activities</div>"
+    $("#bannerContent").html(htmlContent);
 }

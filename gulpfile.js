@@ -24,7 +24,7 @@ gulp.task('copy-activities', function () {
             let dir = file.dirname.split('/');
             lastFolderName = dir.pop();
             jsonO.parentFolderName = lastFolderName;
-            jsonO.logo = 'assets/images/activities/' + lastFolderName + "/" + jsonO.logo;
+            jsonO.logo = 'assets/images/activities/' + lastFolderName + "/images/" + jsonO.logo;
 
             var allActivities = (fs.readFileSync('app/activities/activityList.json'));
             if (allActivities.length == 0)

@@ -8,9 +8,6 @@ $(() => {
 })
 
 class SmallAlphaActivity {
-    
-   
-
     SmallAlphaActivity() {
 
     }
@@ -26,13 +23,13 @@ class SmallAlphaActivity {
 
     attachHandlers() {
         var _thisRef = this;
-         $("#alpha").on("click", function () {
-             _thisRef.loadDetails();
-         });
+        $("#alpha").on("click", function () {
+            _thisRef.loadDetails();
+        });
 
-         document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             switch (e.key) {
-                case "ArrowUp":  
+                case "ArrowUp":
                 case "ArrowDown":
                 case "ArrowLeft":
                 case "ArrowRight":
@@ -44,7 +41,7 @@ class SmallAlphaActivity {
 
     generateRandomAlphabets(): string {
         var validChars = 'abcdefghijklmnopqrstuvwxyz';
-        var charIndex = getRandomInt(26);
+        var charIndex = getRandomInt(0, 26);
         return validChars[charIndex];
     }
 
