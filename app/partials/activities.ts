@@ -18,7 +18,7 @@ function loadActivities(data: Activity[]): void {
                                                         <img src="'+activity.logo+'" style="width:50px; height:50px" /> \
                                                         <h2 class="fs-4 fw-bold">'+ activity.header +'</h2> \
                                                         <p class="mb-0">'+activity.description+'</p> \
-                                                        <a class="btn btn-primary btn-lg" href="index.html?v=activity&a='+ activity.id +'">Go the the activity</a> \
+                                                        <a class="btn btn-primary btn-lg" href="index.html?v=activity&a='+ activity.id +'">Go to the activity</a> \
                                                     </div> \
                                                 </div> \
                                             </div>');
