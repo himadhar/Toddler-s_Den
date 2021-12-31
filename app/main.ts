@@ -15,12 +15,16 @@ $(() => {
         defGetPageDetails = getPartialPageDetails(pageToLoad);
 
     defGetPageDetails.then(
-        (pageDetails: PageDetails) => { loadFiles(pageDetails) },
+        (pageDetails: PageDetails) => { 
+            loadFiles(pageDetails)  
+            if (pageToLoad == "activity") {
+                loadJSFile("assets/js/release/activities/activityMain.js");
+                renderActivityBannerContent(pageDetails.activityDetails);
+            }
+        },
         () => { console.log("error") });
 
-    if (pageToLoad == "activity") {
-        renderActivityBannerContent();
-    }
+   
 });
 
 async function getPartialPageDetails(pageToLoad: string): Promise<PageDetails> {
@@ -45,6 +49,7 @@ async function getActivityPageDetails(activityId: string): Promise<PageDetails> 
                 htmlPath: "partials/activities/" + activityDetails.parentFolderName + "/index.html",
                 jsPath: "assets/js/release/activities/" + activityDetails.parentFolderName + "/index.js",
                 cssPath: "assets/css/activities/" + activityDetails.parentFolderName + "/css/main.css",
+                activityDetails: activityDetails,
             }
             def.resolve(pageDetails);
         },

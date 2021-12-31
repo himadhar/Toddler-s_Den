@@ -41,7 +41,12 @@ function getRandomColor(): string {
     return Math.floor(Math.random() * 16777215).toString(16);
 }
 
-function renderActivityBannerContent() : void {
+function renderActivityBannerContent(activityDetails ?: Activity) : void {
+    if(activityDetails)
+    {
+        $("#bannerContent").append("<img src='"+ activityDetails.logo +"' style='width:50px; height:50px' />");
+        $("#bannerContent").append(activityDetails.header + " | ");
+    }
     var htmlContent : string = "<a href='index.html?v=activities' class='link-dark'>View all Activities</div>"
-    $("#bannerContent").html(htmlContent);
+    $("#bannerContent").append(htmlContent);
 }

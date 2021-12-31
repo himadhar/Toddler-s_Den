@@ -1,53 +1,30 @@
 ///reference path="utils.ts"
+///reference path="app/activities/activityMain.ts"
 
-$(() => {
-    var activity = new SmallAlphaActivity();
-    activity.setHeightWidth();
-    activity.loadDetails();
-    activity.attachHandlers();
-})
+$(()=>{
+    new SmallAlphaActivity();
+   
+});
 
-class SmallAlphaActivity {
-    SmallAlphaActivity() {
-
+class SmallAlphaActivity extends ActivityMain{ 
+    constructor(){
+        super("abcdefghijklmnopqrstuvwxyz", "#smallAlphaMainDiv","#alpha","#imgAlpha", 2);
     }
 
-    loadDetails() {
-        this.showRandomAlphabet();
-    }
-
-    setHeightWidth() {
-        $("#smallAlphaMainDov").height($(window).height() ?? 400 - 200);
-        $("#smallAlphaMainDov").width($("#mainContent").width() ?? "100px");
-    }
-
-    attachHandlers() {
+    attachHandlers(): void {
+        super.attachHandlers();
         var _thisRef = this;
-        $("#alpha").on("click", function () {
-            _thisRef.loadDetails();
-        });
-
         document.addEventListener('keydown', function (e) {
-            switch (e.key) {
-                case "ArrowUp":
-                case "ArrowDown":
-                case "ArrowLeft":
-                case "ArrowRight":
-                    _thisRef.loadDetails();
+            switch (e.code) {
+                case "KeyA": case "KeyB": case "KeyC": case "KeyD": case "KeyE":
+                case "KeyF": case "KeyG": case "KeyH": case "KeyI": case "KeyJ":
+                case "KeyK": case "KeyL": case "KeyM": case "KeyN": case "KeyO":
+                case "KeyP": case "KeyQ": case "KeyR": case "KeyS": case "KeyT":
+                case "KeyU": case "KeyV": case "KeyW": case "KeyX": case "KeyY": case "KeyZ":
+                    _thisRef.loadDetails(e.key.toUpperCase());
                     break;
             }
+
         });
-    }
-
-    generateRandomAlphabets(): string {
-        var validChars = 'abcdefghijklmnopqrstuvwxyz';
-        var charIndex = getRandomInt(0, 26);
-        return validChars[charIndex];
-    }
-
-    showRandomAlphabet() {
-        var alpha: string = this.generateRandomAlphabets();
-        $("#alpha").text(alpha);
-        $("#alpha").css('color', getRandomColor());
     }
 }

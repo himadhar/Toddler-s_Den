@@ -9,5 +9,6 @@ interface Activity {
 interface PageDetails{
     htmlPath:string,
     jsPath:string,
-    cssPath?:string
+    cssPath?:string,
+    activityDetails?: Activity
 }

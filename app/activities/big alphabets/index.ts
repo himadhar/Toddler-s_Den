@@ -1,41 +1,21 @@
 ///reference path="utils.ts"
+///reference path="app/activities/activityMain.ts"
 
 $(() => {
-    var activity = new BigAlphaActivity();
-    activity.setHeightWidth();
-    activity.loadDetails();
-    activity.attachHandlers();
-})
+    new BigAlphaActivity();
 
-class BigAlphaActivity {
+});
 
-    BigAlphaActivity() {
-
+class BigAlphaActivity extends ActivityMain {
+    constructor() {
+        super("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "#bigAlphaMainDiv", "#alpha", "#imgAlpha", 2);
     }
 
-    loadDetails(selectedChar?: string) {
-        this.showRandomAlphabet(selectedChar);
-    }
-
-    setHeightWidth() {
-        $("#bigAlphaMainDov").height($(window).height() ?? 400 - 200);
-        $("#bigAlphaMainDov").width($("#mainContent").width() ?? "100px");
-    }
-
-    attachHandlers() {
+    attachHandlers(): void {
+        super.attachHandlers();
         var _thisRef = this;
-        $("#alpha").on("click", function () {
-            _thisRef.loadDetails();
-        });
-
         document.addEventListener('keydown', function (e) {
             switch (e.code) {
-                case "ArrowUp":
-                case "ArrowDown":
-                case "ArrowLeft":
-                case "ArrowRight":
-                    _thisRef.loadDetails();
-                    break;
                 case "KeyA": case "KeyB": case "KeyC": case "KeyD": case "KeyE":
                 case "KeyF": case "KeyG": case "KeyH": case "KeyI": case "KeyJ":
                 case "KeyK": case "KeyL": case "KeyM": case "KeyN": case "KeyO":
@@ -44,22 +24,7 @@ class BigAlphaActivity {
                     _thisRef.loadDetails(e.key.toUpperCase());
                     break;
             }
+
         });
-    }
-
-    generateRandomAlphabets(): string {
-        var validChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        var charIndex = getRandomInt(0, 26);
-        return validChars[charIndex];
-    }
-
-    showRandomAlphabet(selectedChar?: string) {
-        var alpha: string = selectedChar ?? this.generateRandomAlphabets();
-        $("#alpha").text(alpha);
-        $("#alpha").css('color', getRandomColor());
-        $("#imgAlpha").removeAttr('class');
-        var randomSprite = getRandomInt(1, 2);
-        $("#imgAlpha").addClass('sprite' + randomSprite);
-        $("#imgAlpha").addClass('sprite-' + alpha + randomSprite);
     }
 }
