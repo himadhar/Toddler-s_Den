@@ -2,8 +2,8 @@ class ActivityMain {
     charactersToShow: string = "";
     mainDivId: string = "";
     contentDivId: string = "";
-    imageDivId: string = "";
-    numberOfSprites: number = 1;
+    imageDivId?: string = "";
+    numberOfSprites?: number = 1;
 
     constructor(charactersToShow: string, mainDivId: string, contentDivId: string, imageDivId?: string, numberOfSprites?: number) {
         this.charactersToShow = charactersToShow;
@@ -45,10 +45,8 @@ class ActivityMain {
     }
 
     generateRandomCharacters(): string {
-        var validChars = this.charactersToShow;
-        var charIndex = getRandomInt(0, validChars.length - 1);
-
-        return validChars[charIndex];
+        var charIndex = getRandomInt(0, this.charactersToShow.length - 1);
+        return this.charactersToShow[charIndex];
     }
 
     showRandomCharacter(selectedChar?: string) {
@@ -57,7 +55,7 @@ class ActivityMain {
         $(this.contentDivId).css('color', getRandomColor());
         if (this.imageDivId) {
             $(this.imageDivId).removeAttr('class');
-            var randomSprite = getRandomInt(1, this.numberOfSprites);
+            var randomSprite = getRandomInt(1, this.numberOfSprites!);
             $(this.imageDivId).addClass('sprite' + randomSprite);
             $(this.imageDivId).addClass('sprite-' + alpha + randomSprite);
         }
