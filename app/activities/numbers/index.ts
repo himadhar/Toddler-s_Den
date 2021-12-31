@@ -1,8 +1,6 @@
 ///reference path="utils.ts"
 ///reference path="app/activities/activityMain.ts"
 
-import { isNumber } from "util";
-
 $(() => {
     new NumberActivity();
 
